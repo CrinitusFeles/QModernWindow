@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import Self
 
 from loguru import logger
 from pydantic import BaseModel
@@ -18,7 +19,7 @@ class GUI_Config(BaseModel):
             file.write(self.model_dump_json(indent=4))
 
     @classmethod
-    def load_gui_config(cls) -> "GUI_Config":
+    def load_gui_config(cls) -> Self:
         config_path: Path = Path.cwd() / 'app_config.json'
         if config_path.exists():
             with open(config_path, 'r+', encoding='utf-8') as file:
