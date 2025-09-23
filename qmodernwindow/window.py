@@ -1,8 +1,8 @@
 
 from PyQt6 import QtWidgets, QtCore
 from PyQt6.QtGui import QCloseEvent
-from qcustomwindow import CustomWindow, stylesheet
-from qcustomwidgets import Button, dark, light
+from qcustomwindow import CustomWindow
+from qcustomwidgets import Button, dark, light, stylesheet
 from app_updater import UpdateCheckWindow
 from qmodernwindow.config import GUI_Config
 
