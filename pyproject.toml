@@ -1,0 +1,18 @@
+[project]
+name = "qmodernwindow"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "app-updater",
+    "loguru>=0.7.3",
+    "pydantic>=2.11.9",
+    "qcustomwidgets",
+    "qcustomwindow",
+]
+
+[tool.uv.sources]
+qcustomwindow = { git = "https://github.com/CrinitusFeles/QCustomWindow" }
+qcustomwidgets = { git = "https://github.com/CrinitusFeles/QCustomWidgets" }
+app-updater = { git = "https://github.com/CrinitusFeles/AppUpdater" }
