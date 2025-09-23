@@ -73,8 +73,10 @@ class ModernWindow(CustomWindow):
         self.is_dark = not self.is_dark
 
     def closeEvent(self, a0: QCloseEvent | None) -> None:
-        self.config.width = self.width()
-        self.config.height = self.height()
+        self.config.is_maximized = self.isMaximized()
+        if not self.config.is_maximized:
+            self.config.width = self.width()
+            self.config.height = self.height()
         self.config.dark_theme = self.is_dark
         self.config.save_config()
         super().closeEvent(a0)

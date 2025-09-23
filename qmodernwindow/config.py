@@ -12,6 +12,7 @@ class GUI_Config(BaseModel):
     url: str = ''
     width: int = 0
     height: int = 0
+    is_maximized: bool = False
 
     def save_config(self) -> None:
         config_path: Path = Path.cwd() / 'app_config.json'
