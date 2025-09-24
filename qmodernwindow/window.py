@@ -80,6 +80,7 @@ class ModernWindow(CustomWindow):
         self.config.dark_theme = self.is_dark
         self.config.save_config()
         super().closeEvent(a0)
+        QtWidgets.QApplication.closeAllWindows()
 
 
 if __name__ == '__main__':
