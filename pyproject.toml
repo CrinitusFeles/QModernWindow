@@ -10,9 +10,11 @@ dependencies = [
     "pydantic>=2.11.9",
     "qcustomwidgets",
     "qcustomwindow",
+    "qissuereporter",
 ]
 
 [tool.uv.sources]
 qcustomwindow = { git = "https://github.com/CrinitusFeles/QCustomWindow" }
 qcustomwidgets = { git = "https://github.com/CrinitusFeles/QCustomWidgets" }
 app-updater = { git = "https://github.com/CrinitusFeles/AppUpdater" }
+qissuereporter = { git = "https://github.com/CrinitusFeles/QIssueReporter" }

@@ -10,6 +10,8 @@ class GUI_Config(BaseModel):
     check_for_update: bool = True
     token: str = ''
     url: str = ''
+    issues_url: str = ''
+    issues_token: str = ''
     width: int = 0
     height: int = 0
     is_maximized: bool = False
