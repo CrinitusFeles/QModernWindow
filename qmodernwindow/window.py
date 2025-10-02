@@ -15,18 +15,23 @@ class ModernWindow(CustomWindow):
         self.config: GUI_Config = config or GUI_Config.load_gui_config()
         self._version: str = version
         self.theme_button = Button('', [':/svg/dark', ':/svg/light'],
-                                   flat=True, iterate_icons=True)
+                                   flat=True, iterate_icons=True,
+                                   tooltip='Смена цветовой палитры')
         self.theme_button.clicked.connect(self.change_theme)
         self.add_right_widget(self.theme_button)
 
         self.bug_report = ReporterWindow(version, self.config.issues_url,
                                          self.config.issues_token)
+        self.bug_report.report_created.connect(self.bug_report.hide)
         self.report_viewer = None
-        self.reporter_button = Button('', [':/svg/bug-report'], flat=True)
+        self.reporter_button = Button('', [':/svg/bug-report'], flat=True,
+                                      tooltip='Создание отчета об ошибках')
         self.reporter_button.clicked.connect(self.bug_report.show)
-        self.viewer_button = Button('', [':/svg/issues'], flat=True)
+        self.viewer_button = Button('', [':/svg/issues'], flat=True,
+                                    tooltip='Просмотр отчетов об ошибках')
         self.viewer_button.clicked.connect(self.on_viewer_clicked)
-        self.pin_button = Button('', [':/svg/pin'], flat=True)
+        self.pin_button = Button('', [':/svg/pin'], flat=True,
+                                 tooltip='Закрепить окно поверх других')
         self.pin_button.setCheckable(True)
         self.pin_button.clicked.connect(self.on_pin)
         self.add_right_widget(self.pin_button)
