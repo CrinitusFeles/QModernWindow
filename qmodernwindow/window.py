@@ -10,7 +10,8 @@ from qissuereporter import ReporterWindow, ViewerWindow
 
 class ModernWindow(CustomWindow):
     def __init__(self, version: str = '',
-                 config: GUI_Config | None = None) -> None:
+                 config: GUI_Config | None = None,
+                 skip_theme_applying: bool = False) -> None:
         super().__init__()
         self.config: GUI_Config = config or GUI_Config.load_gui_config()
         self._version: str = version
@@ -52,10 +53,11 @@ class ModernWindow(CustomWindow):
         if app:
             app.setStyleSheet(stylesheet)  # type: ignore
         self.is_dark: bool = False
-        if self.config.dark_theme:
-            self.theme_button.click()
-        else:
-            light()
+        if not skip_theme_applying:
+            if self.config.dark_theme:
+                self.theme_button.click()
+            else:
+                light()
         if self.config.width > 0 and self.config.height > 0:
             self.resize(self.config.width, self.config.height)
 
