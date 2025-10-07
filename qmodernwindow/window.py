@@ -26,7 +26,7 @@ class ModernWindow(CustomWindow):
         self.report_viewer = None
         self.reporter_button = Button('', [':/svg/bug-report'], flat=True,
                                       tooltip='Создание отчета об ошибках')
-        self.reporter_button.clicked.connect(self.bug_report.show)
+        self.reporter_button.clicked.connect(self.on_reporter_clicked)
         self.viewer_button = Button('', [':/svg/issues'], flat=True,
                                     tooltip='Просмотр отчетов об ошибках')
         self.viewer_button.clicked.connect(self.on_viewer_clicked)
@@ -59,11 +59,16 @@ class ModernWindow(CustomWindow):
         if self.config.width > 0 and self.config.height > 0:
             self.resize(self.config.width, self.config.height)
 
+    def on_reporter_clicked(self):
+        self.bug_report.show()
+        self.bug_report.raise_()
+
     def on_viewer_clicked(self):
         if not self.report_viewer:
             self.report_viewer = ViewerWindow(self.config.issues_url,
                                               self.config.issues_token)
         self.report_viewer.show()
+        self.report_viewer.raise_()
 
     def on_new_version(self):
         new_version_button = Button(f'v{self._version}',
@@ -82,6 +87,7 @@ class ModernWindow(CustomWindow):
                 self.app_updater.close()
             else:
                 self.app_updater.show()
+                self.app_updater.raise_()
 
     def on_pin(self):
         if self.pin_button.isChecked():
