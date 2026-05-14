@@ -31,7 +31,8 @@ class ModernWindow(CustomWindow):
         self.viewer_button = Button('', [':/svg/issues'], flat=True,
                                     tooltip='Просмотр отчетов об ошибках')
         self.viewer_button.clicked.connect(self.on_viewer_clicked)
-        self.pin_button = Button('', [':/svg/pin'], flat=True,
+        self.pin_button = Button('', [':/svg/pin', ':/svg/pinned'], flat=True,
+                                 iterate_icons=True,
                                  tooltip='Закрепить окно поверх других')
         self.pin_button.setCheckable(True)
         self.pin_button.clicked.connect(self.on_pin)
