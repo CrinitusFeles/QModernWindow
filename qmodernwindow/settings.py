@@ -16,6 +16,7 @@ class SettingsWindow(CustomWindow):
                                  iterate_icons=True,
                                  tooltip='Закрепить окно поверх других')
         self.pin_button.setCheckable(True)
+        self.add_right_widget(self.pin_button)
         self._widgets: dict[str, QtWidgets.QWidget] = {}
 
     def add_settings_page(self, name: str, widget: QtWidgets.QWidget):
