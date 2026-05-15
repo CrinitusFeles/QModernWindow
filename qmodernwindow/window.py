@@ -2,7 +2,7 @@
 from PyQt6 import QtWidgets, QtCore
 from PyQt6.QtGui import QCloseEvent
 from qcustomwindow import CustomWindow
-from qcustomwidgets import Button
+from qcustomwidgets import Button, stylesheet
 from app_updater import UpdateCheckWindow
 from qmodernwindow.palette_settings import PaletteSettings
 from qmodernwindow.config import GUI_Config
@@ -70,6 +70,7 @@ class ModernWindow(CustomWindow):
                 self.theme_button.click()
             else:
                 self.palette_settings.load_light_config()
+            QtWidgets.QApplication.instance().setStyleSheet(stylesheet)  # type: ignore
 
         if self.config.width > 0 and self.config.height > 0:
             self.resize(self.config.width, self.config.height)
