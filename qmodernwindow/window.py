@@ -2,19 +2,28 @@
 from PyQt6 import QtWidgets, QtCore
 from PyQt6.QtGui import QCloseEvent
 from qcustomwindow import CustomWindow
-from qcustomwidgets import Button, dark, light, stylesheet
+from qcustomwidgets import Button
 from app_updater import UpdateCheckWindow
+from qmodernwindow.palette_settings import PaletteSettings
 from qmodernwindow.config import GUI_Config
 from qissuereporter import ReporterWindow, ViewerWindow
+
+from qmodernwindow.settings import SettingsWindow
 
 
 class ModernWindow(CustomWindow):
     def __init__(self, version: str = '',
-                 config: GUI_Config | None = None,
-                 skip_theme_applying: bool = False) -> None:
+                 config: GUI_Config | None = None) -> None:
         super().__init__()
         self.config: GUI_Config = config or GUI_Config.load_gui_config()
         self._version: str = version
+        self.settings = SettingsWindow(self.config)
+        self.palette_settings = PaletteSettings(self.config)
+        self.settings.add_settings_page('Palette', self.palette_settings)
+        self.settings_button = Button("", [':/svg/settings'], flat=True,
+                                      tooltip='Открыть окно настроек')
+        self.settings_button.clicked.connect(self.show_settings)
+        self.add_right_widget(self.settings_button)
         self.theme_button = Button('', [':/svg/dark', ':/svg/light'],
                                    flat=True, iterate_icons=True,
                                    tooltip='Смена цветовой палитры')
@@ -41,8 +50,8 @@ class ModernWindow(CustomWindow):
             self.add_right_widget(self.reporter_button)
             self.add_right_widget(self.viewer_button)
         self.app_updater: UpdateCheckWindow | None = None
-        if version and self.config.check_for_update and self.config.url:
-            self.app_updater = UpdateCheckWindow(self.config.url,
+        if version and self.config.check_for_update and self.config.releases_url:
+            self.app_updater = UpdateCheckWindow(self.config.releases_url,
                                                  self.config.token, version)
             self.app_updater.widget.new_version.connect(self.on_new_version)
         if version:
@@ -50,15 +59,18 @@ class ModernWindow(CustomWindow):
             self.version_button.clicked.connect(self.on_version_clicked)
             self.add_left_widget(self.version_button)
 
-        app = QtWidgets.QApplication.instance()
-        if app:
-            app.setStyleSheet(stylesheet)  # type: ignore
         self.is_dark: bool = False
-        if not skip_theme_applying:
+        if self.config.palette:
+            self.palette_settings.apply_current_palette()
+            self.is_dark = self.config.dark_theme
+            if self.is_dark:
+                self.theme_button.set_state(1)
+        else:
             if self.config.dark_theme:
                 self.theme_button.click()
             else:
-                light()
+                self.palette_settings.load_light_config()
+
         if self.config.width > 0 and self.config.height > 0:
             self.resize(self.config.width, self.config.height)
 
@@ -100,7 +112,10 @@ class ModernWindow(CustomWindow):
         self.show()
 
     def change_theme(self):
-        light() if self.is_dark else dark()
+        if self.is_dark:
+            self.palette_settings.load_light_config()
+        else:
+            self.palette_settings.load_dark_config()
         self.is_dark = not self.is_dark
 
     def closeEvent(self, a0: QCloseEvent | None) -> None:
@@ -109,9 +124,14 @@ class ModernWindow(CustomWindow):
             self.config.width = self.width() - 16
             self.config.height = self.height() - 39
         self.config.dark_theme = self.is_dark
+        self.palette_settings.closeEvent(a0)
         self.config.save_config()
         super().closeEvent(a0)
         QtWidgets.QApplication.closeAllWindows()
+
+    def show_settings(self):
+        self.settings.show()
+        self.settings.raise_()
 
 
 if __name__ == '__main__':
