@@ -28,25 +28,30 @@ def show_dialog():
     return btn == msg_btn.Yes
 
 
+default_path = Path.cwd() / 'Configs'
+
 class GUI_Config(BaseModel):
     dark_theme: bool = False
     check_for_update: bool = True
     token: str = ''
-    url: str = ''
+    releases_url: str = ''
     issues_url: str = ''
     issues_token: str = ''
     width: int = 0
     height: int = 0
     is_maximized: bool = False
+    palette: dict[str, str] = {}
 
     def save_config(self) -> None:
-        config_path: Path = Path.cwd() / 'app_config.json'
+        config_path: Path = default_path / 'app_config.json'
+        if not default_path.exists():
+            default_path.mkdir(parents=True, exist_ok=True)
         with open(config_path, 'w+', encoding='utf-8') as file:
             file.write(self.model_dump_json(indent=4))
 
     @classmethod
-    def load_gui_config(cls) -> Self:
-        config_path: Path = Path.cwd() / 'app_config.json'
+    def load_gui_config(cls, config_path: Path | None = None) -> Self:
+        config_path = config_path or default_path / 'app_config.json'
         if config_path.exists():
             with open(config_path, 'r+', encoding='utf-8') as file:
                 raw_config: str = file.read()
