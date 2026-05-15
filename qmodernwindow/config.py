@@ -33,7 +33,7 @@ default_path = Path.cwd() / 'Configs'
 class GUI_Config(BaseModel):
     dark_theme: bool = False
     check_for_update: bool = True
-    token: str = ''
+    releases_token: str = ''
     releases_url: str = ''
     issues_url: str = ''
     issues_token: str = ''

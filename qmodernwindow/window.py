@@ -52,7 +52,8 @@ class ModernWindow(CustomWindow):
         self.app_updater: UpdateCheckWindow | None = None
         if version and self.config.check_for_update and self.config.releases_url:
             self.app_updater = UpdateCheckWindow(self.config.releases_url,
-                                                 self.config.token, version)
+                                                 self.config.releases_token,
+                                                 version)
             self.app_updater.widget.new_version.connect(self.on_new_version)
         if version:
             self.version_button = Button(f"v{version}")
