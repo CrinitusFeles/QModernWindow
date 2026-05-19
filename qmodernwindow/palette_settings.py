@@ -73,7 +73,8 @@ class PaletteSettings(QtWidgets.QWidget):
         p = QtWidgets.QApplication.palette()
         p.setColor(QtGui.QPalette.ColorRole(num), QtGui.QColor(color))
         QtWidgets.QApplication.setPalette(p)
-        QtWidgets.QApplication.instance().setStyleSheet(stylesheet)  # type: ignore
+        QtWidgets.QApplication.setStyle('Fusion')
+        # QtWidgets.QApplication.instance().setStyleSheet(stylesheet)  # type: ignore
 
     def apply_current_palette(self):
         p = QtWidgets.QApplication.palette()
